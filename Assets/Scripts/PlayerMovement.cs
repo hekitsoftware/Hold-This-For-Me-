@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        #region Movement
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
@@ -76,6 +77,28 @@ public class PlayerMovement : MonoBehaviour
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        }
+        #endregion
+
+        if (Input.GetKeyDown(KeyCode.E)) PlayerInteract();
+    }
+
+    public void PlayerInteract()
+    {
+        // << is bitshift
+        // => is lambda
+
+        var layermask0 = 1 << 0;
+        var layermask3 = 1 << 3;
+        var finalmask = layermask0 | layermask3;
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(.5f, .5f, 0));
+
+        if (Physics.Raycast(ray, out hit, 15, finalmask))
+        {
+            Interact intScript = hit.transform.GetComponent<Interact>();
+            if (intScript) intScript.CallInteract(this);
         }
     }
 }
