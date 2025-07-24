@@ -3,6 +3,10 @@ using UnityEngine;
 public class IncomingInteraction : MonoBehaviour
 {
     //Thing
+    [Header("Talking (OPTIONAL)")]
+    [SerializeField] private string talkingKnotName;
+
+
     public Interact activationAgent;
 
     private void OnEnable()
@@ -23,6 +27,9 @@ public class IncomingInteraction : MonoBehaviour
 
     public void InteractionEvent()
     {
-        Debug.Log("MingleHasBeenPoked");
+        if (!talkingKnotName.Equals(""))
+        {
+            GameManager.instance.talkingManager.EnterTalking(talkingKnotName);
+        }
     }
 }
