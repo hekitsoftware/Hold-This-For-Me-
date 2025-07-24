@@ -23,6 +23,6 @@ public class IncomingInteraction : MonoBehaviour
 
     public void InteractionEvent()
     {
-        Debug.Log("MINGLE");
+        Debug.Log("MingleHasBeenPoked");
     }
 }
