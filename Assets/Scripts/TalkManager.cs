@@ -3,8 +3,8 @@ using Ink.Runtime;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 public class TalkManager : MonoBehaviour
 {
@@ -19,6 +19,14 @@ public class TalkManager : MonoBehaviour
     public PlayerMovement player;
 
     private Story _story;
+    private Coroutine typingCoroutine;
+    private bool isTyping = false;
+
+    [Header("Audio")]
+    public TalkingID talkingID;
+    public AudioSource audioSource;
+    public AudioClip sideOcClip;
+    public AudioClip vaClip;
 
     private void OnEnable()
     {
@@ -52,14 +60,22 @@ public class TalkManager : MonoBehaviour
     {
         if (_story == null) return;
 
+        // If text is still typing, skip to full text immediately
+        if (isTyping)
+        {
+            StopCoroutine(typingCoroutine);
+            textBox.text = _story.currentText;
+            isTyping = false;
+            ShowChoices();
+            return;
+        }
+
         // Only continue if there are NO choices currently
         if (_story.currentChoices.Count == 0)
         {
             ContinueStory();
         }
     }
-
-
     private void ContinueStory()
     {
         // Hide all choice buttons first
@@ -71,18 +87,34 @@ public class TalkManager : MonoBehaviour
         if (_story.canContinue)
         {
             player.canMove = false;
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
 
             textBox.gameObject.SetActive(true);
             panel.gameObject.SetActive(true);
-            textBox.text = _story.Continue();
-            ShowChoices();
+
+            string line = _story.Continue();
+            typingCoroutine = StartCoroutine(TypeText(line));
         }
         else
         {
             FinishTalking();
         }
+    }
+
+    private IEnumerator TypeText(string line)
+    {
+        isTyping = true;
+        textBox.text = "";
+
+        foreach (char c in line)
+        {
+            textBox.text += c;
+            yield return new WaitForSeconds(0.02f); // Typing speed
+        }
+
+        isTyping = false;
+        ShowChoices();
     }
 
     private void ShowChoices()
@@ -95,7 +127,7 @@ public class TalkManager : MonoBehaviour
             choiceButtons[index].gameObject.SetActive(true);
             index++;
         }
-        for (int i = index; i < 2; i++)
+        for (int i = index; i < choiceButtons.Length; i++)
         {
             choiceButtons[i].gameObject.SetActive(false);
         }
@@ -110,13 +142,13 @@ public class TalkManager : MonoBehaviour
     private void FinishTalking()
     {
         panel.gameObject.SetActive(false);
-        for(int i = 0; i < choiceButtons.Length; i++)
+        for (int i = 0; i < choiceButtons.Length; i++)
         {
-            choiceButtons[i].gameObject.SetActive( false);
+            choiceButtons[i].gameObject.SetActive(false);
         }
 
         player.canMove = true;
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }
