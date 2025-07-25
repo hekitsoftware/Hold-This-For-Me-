@@ -3,16 +3,16 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    public Camera playerCamera;
-    public float walkSpeed = 6f;
-    public float runSpeed = 12f;
-    public float jumpPower = 7f;
-    public float gravity = 10f;
-    public float lookSpeed = 2f;
-    public float lookXLimit = 45f;
-    public float defaultHeight = 2f;
-    public float crouchHeight = 1f;
-    public float crouchSpeed = 3f;
+    [SerializeField] public Camera playerCamera;
+    [SerializeField] public float walkSpeed = 6f;
+    [SerializeField] public float runSpeed = 12f;
+    [SerializeField] public float jumpPower = 7f;
+    [SerializeField] public float gravity = 10f;
+    [SerializeField] public float lookSpeed = 2f;
+    [SerializeField] public float lookXLimit = 45f;
+    [SerializeField] public float defaultHeight = 2f;
+    [SerializeField] public float crouchHeight = 1f;
+    [SerializeField] public float crouchSpeed = 3f;
 
     [HideInInspector] public bool canMove = true;
 
