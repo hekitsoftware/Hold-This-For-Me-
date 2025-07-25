@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -16,11 +14,11 @@ public class PlayerMovement : MonoBehaviour
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
 
+    [HideInInspector] public bool canMove = true;
+
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
-
-    private bool canMove = true;
 
     void Start()
     {
@@ -60,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
             characterController.height = crouchHeight;
             walkSpeed = crouchSpeed;
             runSpeed = crouchSpeed;
-
         }
         else
         {
@@ -85,20 +82,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void PlayerInteract()
     {
-        // << is bitshift
-        // => is lambda
+        int layerMask0 = 1 << 0;
+        int layerMask3 = 1 << 3;
+        int finalMask = layerMask0 | layerMask3;
 
-        var layermask0 = 1 << 0;
-        var layermask3 = 1 << 3;
-        var finalmask = layermask0 | layermask3;
-
-        RaycastHit hit;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(.5f, .5f, 0));
-
-        if (Physics.Raycast(ray, out hit, 15, finalmask))
+        if (Physics.Raycast(ray, out RaycastHit hit, 15f, finalMask))
         {
             Interact intScript = hit.transform.GetComponent<Interact>();
-            if (intScript) intScript.CallInteract(this);
+            if (intScript != null) intScript.CallInteract(this);
         }
     }
 }

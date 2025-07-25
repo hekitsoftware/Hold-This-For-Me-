@@ -1,10 +1,9 @@
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class Interact : MonoBehaviour
 {
-    InteractEvent interact = new InteractEvent();
-    PlayerMovement player;
+    private InteractEvent interact = new InteractEvent();
+    private PlayerMovement player;
 
     public InteractEvent GetInteractEvent
     {
@@ -15,13 +14,7 @@ public class Interact : MonoBehaviour
         }
     }
 
-    public PlayerMovement getPlayer
-    {
-        get
-        {
-            return player;
-        }
-    }
+    public PlayerMovement getPlayer => player;
 
     public void CallInteract(PlayerMovement interactedPlayer)
     {
@@ -33,7 +26,6 @@ public class Interact : MonoBehaviour
 public class InteractEvent
 {
     public delegate void InteractHandler();
-
     public event InteractHandler hasInteracted;
 
     public void CallIntactEvent() => hasInteracted?.Invoke();
