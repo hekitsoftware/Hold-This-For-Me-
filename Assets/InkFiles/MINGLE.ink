@@ -2,24 +2,24 @@
 
 === main ===
 Behold! An [OPTION]!
-    * An option?
+    * [An option?]
         Yes, an [OPTION]!
         ...
         -> dumb
-    * Cool
+    * [Cool]
         Dang rights it's cool!
         -> DONE
         
 === dumb ===
 Are you dumb?
-    * Are YOU dumb?
+    * [Are YOU dumb?]
         ME?
         ME???
         I AM NOT DUMB!
         I AM
         M I N G L E !
         -> DONE
-    * Nuh uh
+    * [Nuh uh]
         Hmm...
         Seems legit.
         You've convinced me!
