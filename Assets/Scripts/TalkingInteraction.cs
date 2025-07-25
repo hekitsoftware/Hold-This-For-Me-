@@ -26,6 +26,7 @@ public class TalkingInteraction : MonoBehaviour
 
     public void InteractionEvent()
     {
+        Debug.Log("Interacted with " + this);
         if (tManager != null && InkFile != null)
         {
             tManager.LoadNewInk(InkFile);
