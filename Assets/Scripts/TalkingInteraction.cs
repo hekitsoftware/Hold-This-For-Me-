@@ -5,8 +5,13 @@ public class TalkingInteraction : MonoBehaviour
     [Header("Ink Settings")]
     [SerializeField] public TextAsset InkFile;
 
+    [Header("Audio Clip (For Non-VA Characters)")]
+    [SerializeField] public AudioClip _audioClip;
+
+    public AudioSource _audioSource;
     public Interact incomingInteraction;
     public TalkManager tManager;
+    public talkID talkID;
 
     private void OnEnable()
     {
@@ -30,6 +35,9 @@ public class TalkingInteraction : MonoBehaviour
         if (tManager != null && InkFile != null)
         {
             tManager.LoadNewInk(InkFile);
+            tManager.LoadNonVaClip(_audioClip);
+            tManager.LoadTalkID(talkID);
+            tManager.LoadSpeakerSource(_audioSource);
         }
     }
 }

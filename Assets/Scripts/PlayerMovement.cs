@@ -87,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
         int finalMask = layerMask0 | layerMask3;
 
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(.5f, .5f, 0));
-        if (Physics.Raycast(ray, out RaycastHit hit, 15f, finalMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, 4f, finalMask))
         {
             Interact intScript = hit.transform.GetComponent<Interact>();
             if (intScript != null) intScript.CallInteract(this);

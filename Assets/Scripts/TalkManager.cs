@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 public class TalkManager : MonoBehaviour
 {
+    [Header("Path")]
+    public PathTRIGGER pathTrig;
+
     [Header("Ink & UI")]
     public TextAsset inkFile;
     public TextMeshProUGUI textBox;
@@ -23,10 +26,9 @@ public class TalkManager : MonoBehaviour
     private bool isTyping = false;
 
     [Header("Audio")]
-    public TalkingID talkingID;
     public AudioSource audioSource;
     public AudioClip sideOcClip;
-    public AudioClip vaClip;
+    public talkID talkID;
 
     private void OnEnable()
     {
@@ -48,6 +50,7 @@ public class TalkManager : MonoBehaviour
         panel.gameObject.SetActive(false);
     }
 
+    #region LoadReferences
     public void LoadNewInk(TextAsset newInkFile)
     {
         inkFile = newInkFile;
@@ -55,6 +58,22 @@ public class TalkManager : MonoBehaviour
         panel.gameObject.SetActive(true);
         ContinueStory();
     }
+
+    public void LoadNonVaClip(AudioClip audioClip)
+    {
+        sideOcClip = audioClip;
+    }
+
+    public void LoadTalkID(talkID talkid)
+    {
+        talkID = talkid;
+    }
+
+    public void LoadSpeakerSource(AudioSource source)
+    {
+        audioSource = source;
+    }
+    #endregion
 
     private void OnAcceptPressed(InputAction.CallbackContext context)
     {
@@ -107,15 +126,33 @@ public class TalkManager : MonoBehaviour
         isTyping = true;
         textBox.text = "";
 
+        int letterCount = 0;
+        float pitchVariation = 0.05f; // Optional: small random pitch variation
+        int letterSkipForSound = 3;   // Only play sound every 3 letters
+
         foreach (char c in line)
         {
             textBox.text += c;
+            letterCount++;
+
+            if (talkID != null && talkID.typeID == typeID.NoVA && sideOcClip != null && audioSource != null)
+            {
+                if (letterCount % letterSkipForSound == 0)
+                {
+                    audioSource.pitch = 1f + Random.Range(-pitchVariation, pitchVariation); // optional
+                    audioSource.PlayOneShot(sideOcClip);
+                }
+            }
+
             yield return new WaitForSeconds(0.02f); // Typing speed
         }
 
+        audioSource.pitch = 1f; // Reset pitch
         isTyping = false;
         ShowChoices();
     }
+
+
 
     private void ShowChoices()
     {
@@ -150,5 +187,17 @@ public class TalkManager : MonoBehaviour
         player.canMove = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+}
+
+public class InkExternalfunctions : MonoBehaviour
+{
+    public TalkManager talk;
+
+    public void Bind(Story story, Animator anim)
+    {
+        story.BindExternalFunction("showPath", () => {
+            talk.pathTrig.ShowPath();
+        });
     }
 }
