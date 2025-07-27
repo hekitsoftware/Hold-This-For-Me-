@@ -1,11 +1,8 @@
 using UnityEngine;
-using Ink.Runtime;
 using TMPro;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using Ink.Parsed;
 
 public class TalkManager : MonoBehaviour
 {

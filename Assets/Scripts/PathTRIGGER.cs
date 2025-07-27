@@ -1,7 +1,4 @@
 using UnityEngine;
-using Ink.UnityIntegration;
-using Ink.Runtime;
-
 public class PathTRIGGER : MonoBehaviour
 {
     public Animator anim;
