@@ -3,16 +3,20 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] public Camera playerCamera;
-    [SerializeField] public float walkSpeed = 6f;
-    [SerializeField] public float runSpeed = 12f;
-    [SerializeField] public float jumpPower = 7f;
-    [SerializeField] public float gravity = 10f;
-    [SerializeField] public float lookSpeed = 2f;
-    [SerializeField] public float lookXLimit = 45f;
-    [SerializeField] public float defaultHeight = 2f;
-    [SerializeField] public float crouchHeight = 1f;
-    [SerializeField] public float crouchSpeed = 3f;
+    [SerializeField] private GameObject V_Cam1;
+    [SerializeField] private GameObject V_Cam2;
+    [SerializeField] private GameObject V_Cam3;
+    [SerializeField] private Transform cameraPivot; // The pivot to rotate for vertical look
+
+    [SerializeField] private float walkSpeed = 6f;
+    [SerializeField] private float runSpeed = 12f;
+    [SerializeField] private float jumpPower = 7f;
+    [SerializeField] private float gravity = 10f;
+    [SerializeField] private float lookSpeed = 2f;
+    [SerializeField] private float lookXLimit = 45f;
+    [SerializeField] private float defaultHeight = 2f;
+    [SerializeField] private float crouchHeight = 1f;
+    [SerializeField] private float crouchSpeed = 3f;
 
     [HideInInspector] public bool canMove = true;
 
@@ -20,11 +24,14 @@ public class PlayerMovement : MonoBehaviour
     private float rotationX = 0;
     private CharacterController characterController;
 
+    private bool isManualZoomed;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        ZoomOut();
     }
 
     void Update()
@@ -70,14 +77,20 @@ public class PlayerMovement : MonoBehaviour
 
         if (canMove)
         {
+            // Vertical rotation - rotate the camera pivot (pitch)
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            cameraPivot.localRotation = Quaternion.Euler(rotationX, 0, 0);
+
+            // Horizontal rotation - rotate the player (yaw)
+            transform.Rotate(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
         #endregion
 
         if (Input.GetKeyDown(KeyCode.E)) PlayerInteract();
+
+        if (Input.GetKeyDown(KeyCode.Mouse1) && isManualZoomed == false) { ZoomIn();}
+        if (Input.GetKeyUp(KeyCode.Mouse1) && isManualZoomed == true) { ZoomOut(); }
     }
 
     public void PlayerInteract()
@@ -87,10 +100,34 @@ public class PlayerMovement : MonoBehaviour
         int finalMask = layerMask0 | layerMask3;
 
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(.5f, .5f, 0));
-        if (Physics.Raycast(ray, out RaycastHit hit, 4f, finalMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, 6f, finalMask))
         {
             Interact intScript = hit.transform.GetComponent<Interact>();
             if (intScript != null) intScript.CallInteract(this);
         }
+    }
+
+    public void ZoomIn()
+    {
+        isManualZoomed = true;
+        V_Cam1.SetActive(false);
+        V_Cam2.SetActive(false);
+        V_Cam3.SetActive(true);
+    }
+
+    public void ZoomOut()
+    {
+        isManualZoomed = false;
+        V_Cam1.SetActive(true);
+        V_Cam2.SetActive(false);
+        V_Cam3.SetActive(false);
+    }
+
+    public void ZoomInTalking()
+    {
+        isManualZoomed = false;
+        V_Cam1.SetActive(false);
+        V_Cam2.SetActive(true);
+        V_Cam3.SetActive(false);
     }
 }

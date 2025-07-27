@@ -1,0 +1,6 @@
+# Made in Blockbench 4.12.5
+newmtl m_38a63c0d-ea05-5ef4-d42a-2a5f304f380c
+map_Kd bench_metal.png
+newmtl m_fa762bba-7e1d-23b7-6945-02f351546690
+map_Kd bench_wood.png
+newmtl none

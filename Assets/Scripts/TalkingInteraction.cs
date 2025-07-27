@@ -38,6 +38,7 @@ public class TalkingInteraction : MonoBehaviour
             tManager.LoadNonVaClip(_audioClip);
             tManager.LoadTalkID(talkID);
             tManager.LoadSpeakerSource(_audioSource);
+            tManager.player.ZoomInTalking();
         }
     }
 }

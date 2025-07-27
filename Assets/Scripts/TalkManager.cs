@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using Ink.Parsed;
 
 public class TalkManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class TalkManager : MonoBehaviour
     [Header("References")]
     public PlayerMovement player;
 
-    private Story _story;
+    private Ink.Runtime.Story _story;
     private Coroutine typingCoroutine;
     private bool isTyping = false;
 
@@ -44,7 +45,8 @@ public class TalkManager : MonoBehaviour
     {
         if (inkFile != null)
         {
-            _story = new Story(inkFile.text);
+            _story = new Ink.Runtime.Story(inkFile.text);
+            BindExternalFunctions();
         }
         textBox.gameObject.SetActive(false);
         panel.gameObject.SetActive(false);
@@ -54,7 +56,8 @@ public class TalkManager : MonoBehaviour
     public void LoadNewInk(TextAsset newInkFile)
     {
         inkFile = newInkFile;
-        _story = new Story(inkFile.text);
+        _story = new Ink.Runtime.Story(inkFile.text);
+        BindExternalFunctions();
         panel.gameObject.SetActive(true);
         ContinueStory();
     }
@@ -75,11 +78,26 @@ public class TalkManager : MonoBehaviour
     }
     #endregion
 
+    #region BINDS
+    private void BindExternalFunctions()
+    {
+        _story.BindExternalFunction("showPath", ShowPath);
+    }
+
+    public void ShowPath()
+    {
+        if (pathTrig != null)
+        {
+            pathTrig.ShowPath();
+        }
+    }
+    #endregion
+
+    #region TALKING
     private void OnAcceptPressed(InputAction.CallbackContext context)
     {
         if (_story == null) return;
 
-        // If text is still typing, skip to full text immediately
         if (isTyping)
         {
             StopCoroutine(typingCoroutine);
@@ -89,15 +107,14 @@ public class TalkManager : MonoBehaviour
             return;
         }
 
-        // Only continue if there are NO choices currently
         if (_story.currentChoices.Count == 0)
         {
             ContinueStory();
         }
     }
-    private void ContinueStory()
+
+    public void ContinueStory()
     {
-        // Hide all choice buttons first
         foreach (var button in choiceButtons)
         {
             button.gameObject.SetActive(false);
@@ -120,15 +137,17 @@ public class TalkManager : MonoBehaviour
             FinishTalking();
         }
     }
+    #endregion
 
+    #region TYPETEXT
     private IEnumerator TypeText(string line)
     {
         isTyping = true;
         textBox.text = "";
 
         int letterCount = 0;
-        float pitchVariation = 0.05f; // Optional: small random pitch variation
-        int letterSkipForSound = 3;   // Only play sound every 3 letters
+        float pitchVariation = 0.05f;
+        int letterSkipForSound = 3;
 
         foreach (char c in line)
         {
@@ -139,26 +158,26 @@ public class TalkManager : MonoBehaviour
             {
                 if (letterCount % letterSkipForSound == 0)
                 {
-                    audioSource.pitch = 1f + Random.Range(-pitchVariation, pitchVariation); // optional
+                    audioSource.pitch = 1f + Random.Range(-pitchVariation, pitchVariation);
                     audioSource.PlayOneShot(sideOcClip);
                 }
             }
 
-            yield return new WaitForSeconds(0.02f); // Typing speed
+            yield return new WaitForSeconds(0.02f);
         }
 
-        audioSource.pitch = 1f; // Reset pitch
+        audioSource.pitch = 1f;
         isTyping = false;
         ShowChoices();
     }
+    #endregion
 
-
-
+    #region CHOICES
     private void ShowChoices()
     {
-        List<Choice> choices = _story.currentChoices;
+        List<Ink.Runtime.Choice> choices = _story.currentChoices;
         int index = 0;
-        foreach (Choice c in choices)
+        foreach (Ink.Runtime.Choice c in choices)
         {
             choiceButtons[index].GetComponentInChildren<TextMeshProUGUI>().text = c.text;
             choiceButtons[index].gameObject.SetActive(true);
@@ -176,7 +195,7 @@ public class TalkManager : MonoBehaviour
         ContinueStory();
     }
 
-    private void FinishTalking()
+    public void FinishTalking()
     {
         panel.gameObject.SetActive(false);
         for (int i = 0; i < choiceButtons.Length; i++)
@@ -187,17 +206,7 @@ public class TalkManager : MonoBehaviour
         player.canMove = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        player.ZoomOut();
     }
-}
-
-public class InkExternalfunctions : MonoBehaviour
-{
-    public TalkManager talk;
-
-    public void Bind(Story story, Animator anim)
-    {
-        story.BindExternalFunction("showPath", () => {
-            talk.pathTrig.ShowPath();
-        });
-    }
+    #endregion
 }

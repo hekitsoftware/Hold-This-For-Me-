@@ -1,0 +1,10 @@
+# Made in Blockbench 4.12.5
+newmtl m_56a0f9f7-99ff-fecb-6d8b-0dcf5cb79f9c
+map_Kd barrel.png
+newmtl m_4e9afe19-5d7a-f196-49e5-b7d21fc7d893
+map_Kd glock_holster.png
+newmtl m_7d24a41e-889a-4dff-154a-f7bd0848961f
+map_Kd muzzle.png
+newmtl m_5ff52509-b757-b09a-8339-324169813ba4
+map_Kd trigger.png
+newmtl none
