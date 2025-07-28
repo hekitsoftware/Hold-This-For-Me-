@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public bool CanGun = false;
+    public bool HasGun = false;
+
     public static Inventory Instance;
     public List<Item> items = new List<Item>();
 

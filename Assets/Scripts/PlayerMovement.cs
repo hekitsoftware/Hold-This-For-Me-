@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject V_Cam3;
     [SerializeField] private Transform cameraPivot; // The pivot to rotate for vertical look
 
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private Animator anim;
+
     [SerializeField] private float walkSpeed = 6f;
     [SerializeField] private float runSpeed = 12f;
     [SerializeField] private float jumpPower = 7f;
@@ -89,8 +92,31 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E)) PlayerInteract();
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && isManualZoomed == false) { ZoomIn();}
-        if (Input.GetKeyUp(KeyCode.Mouse1) && isManualZoomed == true) { ZoomOut(); }
+        // === GUN AIMING ===
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (!isManualZoomed)
+            {
+                ZoomIn();
+                anim.SetBool("isAiming", true);
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            if (isManualZoomed)
+            {
+                ZoomOut();
+                anim.SetBool("isAiming", false); // Return to idle
+            }
+        }
+
+        // === GUN FIRING ===
+        if (Input.GetKeyDown(KeyCode.Mouse0) && isManualZoomed)
+        {
+            anim.SetTrigger("fire"); // Fire animation
+            ZoomOut();
+        }
     }
 
     public void PlayerInteract()
