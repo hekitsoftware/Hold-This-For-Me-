@@ -110,6 +110,21 @@ public class TalkManager : MonoBehaviour
         }
     }
 
+    public void LoadInkAtKnot(TextAsset inkFile, string knotName)
+    {
+        this.inkFile = inkFile;
+        _story = new Ink.Runtime.Story(inkFile.text);
+        BindExternalFunctions();
+
+        if (!string.IsNullOrEmpty(knotName))
+        {
+            _story.ChoosePathString(knotName);
+        }
+
+        panel.gameObject.SetActive(true);
+        ContinueStory();
+    }
+
     public void ContinueStory()
     {
         foreach (var button in choiceButtons)

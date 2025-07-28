@@ -3,42 +3,32 @@ using UnityEngine;
 public class TalkingInteraction : MonoBehaviour
 {
     [Header("Ink Settings")]
-    [SerializeField] public TextAsset InkFile;
+    public TextAsset InkFile;
+    private string startKnot;
 
     [Header("Audio Clip (For Non-VA Characters)")]
-    [SerializeField] public AudioClip _audioClip;
+    public AudioClip audioClip;
 
-    public AudioSource _audioSource;
-    public Interact incomingInteraction;
-    public TalkManager tManager;
+    public AudioSource audioSource;
+    public TalkManager talkManager;
     public talkID talkID;
 
-    private void OnEnable()
+    //For normal talking
+    public void SetStartKnot(string knot)
     {
-        if (incomingInteraction != null)
+        startKnot = knot;
+    }
+
+    public void TriggerDialogueWithPlayer(PlayerMovement player)
+    {
+        if (talkManager != null && InkFile != null)
         {
-            incomingInteraction.GetInteractEvent.hasInteracted += InteractionEvent;
+            talkManager.LoadInkAtKnot(InkFile, startKnot);
+            talkManager.LoadNonVaClip(audioClip);
+            talkManager.LoadTalkID(talkID);
+            talkManager.LoadSpeakerSource(audioSource);
+            player.ZoomInTalking();
         }
     }
 
-    private void OnDisable()
-    {
-        if (incomingInteraction != null)
-        {
-            incomingInteraction.GetInteractEvent.hasInteracted -= InteractionEvent;
-        }
-    }
-
-    public void InteractionEvent()
-    {
-        Debug.Log("Interacted with " + this);
-        if (tManager != null && InkFile != null)
-        {
-            tManager.LoadNewInk(InkFile);
-            tManager.LoadNonVaClip(_audioClip);
-            tManager.LoadTalkID(talkID);
-            tManager.LoadSpeakerSource(_audioSource);
-            tManager.player.ZoomInTalking();
-        }
-    }
 }

@@ -1,4 +1,3 @@
--> main
 EXTERNAL showPath()
 
 === main ===

@@ -1,32 +1,17 @@
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class InteractUnityEvent : UnityEvent<PlayerMovement> { }
 
 public class Interact : MonoBehaviour
 {
-    private InteractEvent interact = new InteractEvent();
-    private PlayerMovement player;
+    [Header("Events")]
+    public InteractUnityEvent OnInteract;
 
-    public InteractEvent GetInteractEvent
+    // Call this method when the player interacts with this object
+    public void CallInteract(PlayerMovement player)
     {
-        get
-        {
-            if (interact == null) interact = new InteractEvent();
-            return interact;
-        }
+        OnInteract?.Invoke(player);
     }
-
-    public PlayerMovement getPlayer => player;
-
-    public void CallInteract(PlayerMovement interactedPlayer)
-    {
-        player = interactedPlayer;
-        interact.CallIntactEvent();
-    }
-}
-
-public class InteractEvent
-{
-    public delegate void InteractHandler();
-    public event InteractHandler hasInteracted;
-
-    public void CallIntactEvent() => hasInteracted?.Invoke();
 }
