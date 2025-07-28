@@ -1028,7 +1028,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 30
+  field of view: 35
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -11416,7 +11416,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2663ec061b1c0458bc0d22ff3453b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - itemID: street_post
+    itemName: Postcard
+    itemType: 0
+    isEquipped: 0
+    usedForID: redd
+    hasPhysicalObject: 0
 --- !u!1 &1501126368
 GameObject:
   m_ObjectHideFlags: 0
@@ -13492,6 +13498,7 @@ GameObject:
   - component: {fileID: 2025412062}
   - component: {fileID: 2025412064}
   - component: {fileID: 2025412066}
+  - component: {fileID: 2025412072}
   - component: {fileID: 2025412065}
   - component: {fileID: 2025412067}
   - component: {fileID: 2025412068}
@@ -13603,22 +13610,10 @@ MonoBehaviour:
   OnInteract:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2025412066}
-        m_TargetAssemblyTypeName: TalkingInteraction, Assembly-CSharp
-        m_MethodName: SetStartKnot
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: main
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2025412066}
-        m_TargetAssemblyTypeName: TalkingInteraction, Assembly-CSharp
-        m_MethodName: TriggerDialogueWithPlayer
-        m_Mode: 0
+      - m_Target: {fileID: 2025412072}
+        m_TargetAssemblyTypeName: ItemChecker, Assembly-CSharp
+        m_MethodName: Try
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13663,8 +13658,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 12.137028, y: 30.000006, z: 0.2}
-  m_Center: {x: 0.9271489, y: 0, z: 0}
+  m_Size: {x: 9.980196, y: 11.628372, z: 0.2}
+  m_Center: {x: -0.15126345, y: 4.7098937, z: 0}
 --- !u!82 &2025412068
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13819,6 +13814,73 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 103.47
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2025412072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025412060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c61423a81353f42a780fae4b39cd02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredItemID: street_post
+  onSuccess:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2025412066}
+        m_TargetAssemblyTypeName: TalkingInteraction, Assembly-CSharp
+        m_MethodName: SetStartKnot
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: postcard
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2025412066}
+        m_TargetAssemblyTypeName: TalkingInteraction, Assembly-CSharp
+        m_MethodName: TriggerDialogueWithPlayer
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1317390611}
+          m_ObjectArgumentAssemblyTypeName: PlayerMovement, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onFail:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2025412066}
+        m_TargetAssemblyTypeName: TalkingInteraction, Assembly-CSharp
+        m_MethodName: SetStartKnot
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: main
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2025412066}
+        m_TargetAssemblyTypeName: TalkingInteraction, Assembly-CSharp
+        m_MethodName: TriggerDialogueWithPlayer
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1317390611}
+          m_ObjectArgumentAssemblyTypeName: PlayerMovement, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2035552165
 GameObject:
   m_ObjectHideFlags: 0

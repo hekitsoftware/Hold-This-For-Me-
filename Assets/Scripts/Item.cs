@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum ItemType
 {
-    Key,
+    QuestItem,
     Weapon,
     Puzzle,
     Wearable

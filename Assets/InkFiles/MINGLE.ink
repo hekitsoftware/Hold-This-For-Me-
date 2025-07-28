@@ -49,3 +49,11 @@ Send me a postcard maybe.
 (It gets a bit lonely here)
 ~ showPath()
 -> DONE
+
+=== postcard ===
+A...
+A postcard?
+...
+Aw... You actually got me one.
+Thank you so much...
+-> DONE
