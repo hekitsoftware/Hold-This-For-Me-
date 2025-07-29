@@ -98,7 +98,6 @@ public class PlayerMovement : MonoBehaviour
             if (!isManualZoomed)
             {
                 ZoomIn();
-                anim.SetBool("isAiming", true);
             }
         }
 
@@ -107,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
             if (isManualZoomed)
             {
                 ZoomOut();
-                anim.SetBool("isAiming", false); // Return to idle
             }
         }
 
@@ -115,7 +113,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) && isManualZoomed)
         {
             anim.SetTrigger("fire"); // Fire animation
-            ZoomOut();
         }
     }
 
@@ -135,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ZoomIn()
     {
+        anim.SetBool("isAiming", true);
         isManualZoomed = true;
         V_Cam1.SetActive(false);
         V_Cam2.SetActive(false);
@@ -143,6 +141,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ZoomOut()
     {
+        anim.SetBool("isAiming", false);
         isManualZoomed = false;
         V_Cam1.SetActive(true);
         V_Cam2.SetActive(false);
