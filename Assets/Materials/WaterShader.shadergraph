@@ -1972,8 +1972,8 @@
     "m_ObjectId": "59edffd2d0e142398bbc7735c852fbed",
     "m_Title": "Vertex Displacement",
     "m_Position": {
-        "x": -1381.0001220703125,
-        "y": -589.0000610351563
+        "x": -1381.0,
+        "y": -589.0
     }
 }
 
@@ -2046,7 +2046,7 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
-    "m_Value": 1.0,
+    "m_Value": 7.769999980926514,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
@@ -3331,10 +3331,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -754.9999389648438,
-            "y": -319.0000305175781,
-            "width": 147.0,
-            "height": 152.99996948242188
+            "x": -773.0,
+            "y": -326.0,
+            "width": 208.0,
+            "height": 337.0
         }
     },
     "m_Slots": [
@@ -3352,7 +3352,7 @@
         "perlin noise"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -3478,7 +3478,7 @@
     "m_Title": "COLOUR LERP",
     "m_Position": {
         "x": -1763.0001220703125,
-        "y": 85.0
+        "y": 85.00006103515625
     }
 }
 
@@ -4015,8 +4015,8 @@
     "m_ObjectId": "fbe302c46fd949c8909c6ba283cb912e",
     "m_Title": "LOW POLY NORMALS",
     "m_Position": {
-        "x": -1619.9998779296875,
-        "y": 587.0000610351563
+        "x": -1620.0001220703125,
+        "y": 586.9999389648438
     }
 }
 
