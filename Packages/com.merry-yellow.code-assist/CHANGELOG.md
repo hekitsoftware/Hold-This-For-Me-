@@ -1,5 +1,16 @@
 List of new features, bug fixes and improvements
 
+# Version 1.4.18
+* New code completions: Material/Shader
+* New inline visuals: Material/Shader
+* Bugfix for inline text visuals when document is edited
+* Bugfix completions for constructor method arguments
+* Hotfix for InputManager data fetching with custom tags
+* Gpt models are updated
+
+# Version 1.4.17
+* Hotfix for Unity compile error
+
 # Version 1.4.16
 * New code completions: RenderingLayerMask (Unity 6 and newer only)
 * New inline visuals: RenderingLayerMask (Unity 6 and newer only), and LayerMask

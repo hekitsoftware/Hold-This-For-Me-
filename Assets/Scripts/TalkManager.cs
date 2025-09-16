@@ -8,6 +8,7 @@ public class TalkManager : MonoBehaviour
 {
     [Header("Path")]
     public PathTRIGGER pathTrig;
+    public LevelChange levelChange;
 
     [Header("Ink & UI")]
     public TextAsset inkFile;
@@ -79,6 +80,7 @@ public class TalkManager : MonoBehaviour
     private void BindExternalFunctions()
     {
         _story.BindExternalFunction("showPath", ShowPath);
+        _story.BindExternalFunction("leaveVoid", LeaveVoid);
     }
 
     public void ShowPath()
@@ -86,6 +88,25 @@ public class TalkManager : MonoBehaviour
         if (pathTrig != null)
         {
             pathTrig.ShowPath();
+        }
+    }
+    public void LeaveVoid()
+    {
+        if (levelChange != null)
+        {
+            // Get the Ink variable "nextlevel"
+            string nextLevel = _story.variablesState["nextlevel"]?.ToString();
+
+            Debug.Log("nextlevel: " + nextLevel); // Check if nextlevel is correctly retrieved
+
+            if (!string.IsNullOrEmpty(nextLevel))
+            {
+                levelChange.switchLevelsByName(nextLevel);
+            }
+            else
+            {
+                Debug.LogWarning("Ink variable 'nextlevel' not set!");
+            }
         }
     }
     #endregion
