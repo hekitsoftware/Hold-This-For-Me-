@@ -1,21 +1,27 @@
+using UnityEditor.UI;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("CAMERAS")]
     [SerializeField] private GameObject V_Cam1;
     [SerializeField] private GameObject V_Cam2;
     [SerializeField] private GameObject V_Cam3;
+    [SerializeField] private GameObject V_Cam4;
     [SerializeField] private Transform cameraPivot; // The pivot to rotate for vertical look
 
+    [Header("EXTRAS")]
     [SerializeField] private Inventory inventory;
     [SerializeField] private Animator anim;
+    [SerializeField] private bool isSprinting = false;
 
-    [SerializeField] private float walkSpeed = 6f;
-    [SerializeField] private float runSpeed = 12f;
+    [Header("MOVEMENTS")]
+    [SerializeField] private float walkSpeed = 10f;
+    [SerializeField] private float runSpeed = 18f;
     [SerializeField] private float jumpPower = 7f;
-    [SerializeField] private float gravity = 10f;
-    [SerializeField] private float lookSpeed = 2f;
+    [SerializeField] private float gravity = 8f;
+    [SerializeField] private float lookSpeed = 2f; //sensitivity
     [SerializeField] private float lookXLimit = 45f;
     [SerializeField] private float defaultHeight = 2f;
     [SerializeField] private float crouchHeight = 1f;
@@ -44,10 +50,42 @@ public class PlayerMovement : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+        float curSpeedX = 0f;
+        float curSpeedY = 0f;
+
+        if (canMove)
+        {
+            float speed;
+
+            if (isRunning)
+            {
+                speed = runSpeed;
+                isSprinting = true;
+            }
+            else
+            {
+                speed = walkSpeed;
+                isSprinting = false;
+            }
+
+            float verticalInput = Input.GetAxis("Vertical");
+            float horizontalInput = Input.GetAxis("Horizontal");
+
+            curSpeedX = speed * verticalInput;
+            curSpeedY = speed * horizontalInput;
+        }
+
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+        if (isSprinting)
+        {
+            SpeedZoom();
+        }
+        else
+        {
+            ZoomOut();
+        }
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
@@ -72,8 +110,8 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             characterController.height = defaultHeight;
-            walkSpeed = 6f;
-            runSpeed = 12f;
+            walkSpeed = 10f;
+            runSpeed = 18f;
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
@@ -132,20 +170,20 @@ public class PlayerMovement : MonoBehaviour
 
     public void ZoomIn()
     {
-        anim.SetBool("isAiming", true);
         isManualZoomed = true;
         V_Cam1.SetActive(false);
         V_Cam2.SetActive(false);
         V_Cam3.SetActive(true);
+        V_Cam4.SetActive(false);
     }
 
     public void ZoomOut()
     {
-        anim.SetBool("isAiming", false);
         isManualZoomed = false;
         V_Cam1.SetActive(true);
         V_Cam2.SetActive(false);
         V_Cam3.SetActive(false);
+        V_Cam4.SetActive(false);
     }
 
     public void ZoomInTalking()
@@ -154,5 +192,15 @@ public class PlayerMovement : MonoBehaviour
         V_Cam1.SetActive(false);
         V_Cam2.SetActive(true);
         V_Cam3.SetActive(false);
+        V_Cam4.SetActive(false);
+    }
+
+    public void SpeedZoom()
+    {
+        isManualZoomed = false;
+        V_Cam1.SetActive(false);
+        V_Cam2.SetActive(false);
+        V_Cam3.SetActive(false);
+        V_Cam4.SetActive(true);
     }
 }
