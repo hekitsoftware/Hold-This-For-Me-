@@ -1,4 +1,3 @@
-using UnityEditor.UI;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -73,20 +72,22 @@ public class PlayerMovement : MonoBehaviour
 
             curSpeedX = speed * verticalInput;
             curSpeedY = speed * horizontalInput;
+
+            //SPRINTING
+            bool isMoving = Mathf.Abs(verticalInput) > 0.01f || Mathf.Abs(horizontalInput) > 0.01f;
+
+            if (isSprinting && isMoving)
+            {
+                SpeedZoom();
+            }
+            else if (!isManualZoomed)   // don't override aim zoom
+            {
+                ZoomOut();
+            }
         }
 
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-        if (isSprinting)
-        {
-            SpeedZoom();
-        }
-        else
-        {
-            ZoomOut();
-        }
-
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
