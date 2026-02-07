@@ -19,16 +19,4 @@ public class TalkingInteraction : MonoBehaviour
         startKnot = knot;
     }
 
-    public void TriggerDialogueWithPlayer(PlayerMovement player)
-    {
-        if (talkManager != null && InkFile != null)
-        {
-            talkManager.LoadInkAtKnot(InkFile, startKnot);
-            talkManager.LoadNonVaClip(audioClip);
-            talkManager.LoadTalkID(talkID);
-            talkManager.LoadSpeakerSource(audioSource);
-            player.ZoomInTalking();
-        }
-    }
-
 }

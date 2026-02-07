@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private bool isSprinting = false;
 
+    [Header("INPUT")]
+    private InputAction_Main action;
+
     [Header("MOVEMENTS")]
     [SerializeField] private float walkSpeed = 10f;
     [SerializeField] private float runSpeed = 18f;
@@ -32,6 +35,11 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
 
     private bool isManualZoomed;
+
+    private void Awake()
+    {
+        action = GetComponent<InputAction_Main>();
+    }
 
     void Start()
     {
@@ -152,6 +160,21 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetTrigger("fire"); // Fire animation
         }
+    }
+
+    public void Sprint()
+    {
+
+    }
+
+    public void Move()
+    {
+        
+    }
+
+    public void Jump()
+    {
+
     }
 
     public void PlayerInteract()
