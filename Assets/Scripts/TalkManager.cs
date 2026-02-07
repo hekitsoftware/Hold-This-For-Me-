@@ -6,10 +6,6 @@ using System.Collections.Generic;
 
 public class TalkManager : MonoBehaviour
 {
-    [Header("Path")]
-    public PathTRIGGER pathTrig;
-    public LevelChange levelChange;
-
     [Header("Ink & UI")]
     public TextAsset inkFile;
     public TextMeshProUGUI textBox;
@@ -44,20 +40,9 @@ public class TalkManager : MonoBehaviour
         if (inkFile != null)
         {
             _story = new Ink.Runtime.Story(inkFile.text);
-            BindExternalFunctions();
         }
         textBox.gameObject.SetActive(false);
         panel.gameObject.SetActive(false);
-    }
-
-    #region LoadReferences
-    public void LoadNewInk(TextAsset newInkFile)
-    {
-        inkFile = newInkFile;
-        _story = new Ink.Runtime.Story(inkFile.text);
-        BindExternalFunctions();
-        panel.gameObject.SetActive(true);
-        ContinueStory();
     }
 
     public void LoadNonVaClip(AudioClip audioClip)
@@ -74,42 +59,6 @@ public class TalkManager : MonoBehaviour
     {
         audioSource = source;
     }
-    #endregion
-
-    #region BINDS
-    private void BindExternalFunctions()
-    {
-        _story.BindExternalFunction("showPath", ShowPath);
-        _story.BindExternalFunction("leaveVoid", LeaveVoid);
-    }
-
-    public void ShowPath()
-    {
-        if (pathTrig != null)
-        {
-            pathTrig.ShowPath();
-        }
-    }
-    public void LeaveVoid()
-    {
-        if (levelChange != null)
-        {
-            // Get the Ink variable "nextlevel"
-            string nextLevel = _story.variablesState["nextlevel"]?.ToString();
-
-            Debug.Log("nextlevel: " + nextLevel); // Check if nextlevel is correctly retrieved
-
-            if (!string.IsNullOrEmpty(nextLevel))
-            {
-                levelChange.switchLevelsByName(nextLevel);
-            }
-            else
-            {
-                Debug.LogWarning("Ink variable 'nextlevel' not set!");
-            }
-        }
-    }
-    #endregion
 
     #region TALKING
     private void OnAcceptPressed(InputAction.CallbackContext context)
@@ -129,21 +78,6 @@ public class TalkManager : MonoBehaviour
         {
             ContinueStory();
         }
-    }
-
-    public void LoadInkAtKnot(TextAsset inkFile, string knotName)
-    {
-        this.inkFile = inkFile;
-        _story = new Ink.Runtime.Story(inkFile.text);
-        BindExternalFunctions();
-
-        if (!string.IsNullOrEmpty(knotName))
-        {
-            _story.ChoosePathString(knotName);
-        }
-
-        panel.gameObject.SetActive(true);
-        ContinueStory();
     }
 
     public void ContinueStory()

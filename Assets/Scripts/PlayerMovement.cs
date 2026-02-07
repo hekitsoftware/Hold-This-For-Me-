@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform cameraPivot; // The pivot to rotate for vertical look
 
     [Header("EXTRAS")]
-    [SerializeField] private Inventory inventory;
     [SerializeField] private Animator anim;
     [SerializeField] private bool isSprinting = false;
 
