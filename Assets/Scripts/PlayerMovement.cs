@@ -16,6 +16,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private Weapon weapon;
 
+    [Header("LADDER")]
+    [SerializeField] private float climbSpeed = 6f;
+
+    private bool isOnLadder;
+    private Vector3 ladderForward;
+    [SerializeField] public float ladderSpeed;
+
     [Header("MOVEMENTS")]
     [SerializeField] private float walkSpeed = 10f;
     [SerializeField] private float runSpeed = 18f;
@@ -99,6 +106,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Movement()
     {
+        // them mad stepss
+        if (isOnLadder)
+        {
+            Vector3 climb = Vector3.up * moveInput.y * climbSpeed;
+
+            // stick player to ladder
+            Vector3 stickToLadder = -ladderForward * 2f;
+
+            characterController.Move(((climb + stickToLadder) * Time.deltaTime) * ladderSpeed);
+            return;
+        }
+
         Vector3 forward = transform.forward;
         Vector3 right = transform.right;
 
@@ -167,6 +186,25 @@ public class PlayerMovement : MonoBehaviour
             if (intScript != null) intScript.CallInteract(this);
         }
     }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Ladder"))
+        {
+            isOnLadder = true;
+            ladderForward = collider.transform.forward;
+            moveDirection = Vector3.zero; // stop current momentum
+        }
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Ladder"))
+        {
+            isOnLadder = false;
+        }
+    }
+
 
     public void ZoomIn()
     {

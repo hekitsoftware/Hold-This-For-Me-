@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - DS
+  - Ladder
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ladder
   - Water
   - UI
   - 
