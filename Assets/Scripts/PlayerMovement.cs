@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -39,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
     private bool sprintHeld;
     private bool crouchHeld;
 
+    public bool isFiring;
+
     private InputAction_Main actions;
 
     private void Awake()
@@ -67,6 +70,13 @@ public class PlayerMovement : MonoBehaviour
 
         actions.Player.Attack.performed += _ =>
         {
+            isFiring = true; // method connected in weapon script
+            //fire anim
+        };
+
+        actions.Player.Attack.canceled += _ =>
+        {
+            isFiring = false;
             //fire anim
         };
     }
