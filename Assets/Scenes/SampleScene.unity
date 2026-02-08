@@ -4204,9 +4204,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InkFile: {fileID: 4900000, guid: edc46683f5fd2464b9e331bc127fca43, type: 3}
+  startKnot: 
   audioClip: {fileID: 0}
   audioSource: {fileID: 0}
-  talkManager: {fileID: 0}
   talkID: {fileID: 11400000, guid: cd85c83f5a5485346ab0196bf2388c02, type: 2}
 --- !u!114 &812173260
 MonoBehaviour:
@@ -7405,17 +7405,16 @@ MonoBehaviour:
   V_Cam4: {fileID: 905998443}
   cameraPivot: {fileID: 271133750}
   anim: {fileID: 585556030}
-  isSprinting: 0
+  weapon: {fileID: 0}
   walkSpeed: 10
   runSpeed: 18
   jumpPower: 8
   gravity: 16
-  lookSpeed: 3
+  lookSpeed: 1
   lookXLimit: 80
   defaultHeight: 2
-  crouchHeight: 1
-  crouchSpeed: 3
-  canMove: 1
+  crouchHeight: 0.7
+  crouchSpeed: 2
 --- !u!143 &1317390612
 CharacterController:
   m_ObjectHideFlags: 0
@@ -8099,9 +8098,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InkFile: {fileID: 4900000, guid: 7eafbc370354d484e98440dbf70b7dd5, type: 3}
+  startKnot: 
   audioClip: {fileID: 0}
   audioSource: {fileID: 0}
-  talkManager: {fileID: 0}
   talkID: {fileID: 11400000, guid: cd85c83f5a5485346ab0196bf2388c02, type: 2}
 --- !u!114 &1410896239
 MonoBehaviour:
@@ -8605,9 +8604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2663ec061b1c0458bc0d22ff3453b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanGun: 0
-  HasGun: 0
-  items: []
 --- !u!1 &1520922930
 GameObject:
   m_ObjectHideFlags: 0

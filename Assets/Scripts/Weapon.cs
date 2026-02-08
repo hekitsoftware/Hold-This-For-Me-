@@ -11,4 +11,9 @@ public class Weapon : MonoBehaviour
     {
         
     }
+
+    public void FireWeapon()
+    {
+
+    }
 }
